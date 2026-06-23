@@ -4,10 +4,11 @@ import {
   FaTwitter,
   FaInstagram,
 } from "react-icons/fa";
+import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="py-24 flex items-center justify-center">
+    <footer className="section-glow py-24 flex items-center justify-center">
 
       <div className="mx-auto max-w-6xl px-6 py-14">
 
@@ -49,10 +50,11 @@ export default function Footer() {
 
             <ul className="mt-4 space-y-3 text-gray-600 text-sm sm:text-base">
 
-                <li><a href="#home" className="hover:text-black cursor-pointer transition">Home</a></li>
-                <li><a href="#services" className="hover:text-black cursor-pointer transition">Services</a></li>
-                <li><a href="#projects" className="hover:text-black cursor-pointer transition">Projects</a></li>
-                <li><a href="#contact" className="hover:text-black cursor-pointer transition">Contact</a></li>
+                <li><Link href="/" className="hover:text-black cursor-pointer transition">Home</Link></li>
+                {/* <li><a href="/about" className="hover:text-black cursor-pointer transition">About</a></li> */}
+                <li><Link href="/services" className="hover:text-black cursor-pointer transition">Services</Link></li>
+                <li><Link href="/projects" className="hover:text-black cursor-pointer transition">Projects</Link></li>
+                <li><Link href="/contact" className="hover:text-black cursor-pointer transition">Contact</Link></li>
 
             </ul>
           </div>
@@ -63,19 +65,19 @@ export default function Footer() {
 
             <ul className="mt-4 space-y-3 text-gray-600">
 
-              <li className="hover:text-black transition cursor-pointer">
+              <li>
                 Frontend Development
               </li>
 
-              <li className="hover:text-black transition cursor-pointer">
+              <li>
                 Backend APIs
               </li>
 
-              <li className="hover:text-black transition cursor-pointer">
+              <li>
                 Database Design
               </li>
 
-              <li className="hover:text-black transition cursor-pointer">
+              <li>
                 UI/UX Design
               </li>
 
@@ -85,14 +87,14 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 border-t pt-6 flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm">
+        <div className="mt-12 border-t pt-6 flex flex-col md:flex-row justify-between items-center gap-3 text-gray-500 text-sm">
 
           <p>
             © {new Date().getFullYear()} NovaDigital. All rights reserved.
           </p>
 
           <p className="mt-2 md:mt-0">
-            Built with React & Next.js
+            Built with Next.js
           </p>
 
         </div>

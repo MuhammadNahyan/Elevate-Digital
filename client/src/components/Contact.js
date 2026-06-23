@@ -2,33 +2,89 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Contact() {
-  const [form, setForm] = useState({
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
+  
+  const [loading, setLoading] = useState(false);
+  const [responseMessage, setResponseMessage] = useState("");
+  
+  // const handleMouseMove = (e) => {
+  //   const rect = e.currentTarget.getBoundingClientRect();
+  //   const x = e.clientX - rect.left;
+  //   const y = e.clientY - rect.top;
 
+  //   e.currentTarget.style.setProperty("--x", `${x}px`);
+  //   e.currentTarget.style.setProperty("--y", `${y}px`);
+  // };
+  
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setFormData({
+        ...formData, 
+        [e.target.name]: e.target.value
+    });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form);
-    alert("Message sent (demo only)");
+
+    try {
+        setLoading(true);
+        
+        console.log(formData);
+
+        const response = await fetch("/api/contact", {
+            method: "POST",
+            headers: {
+                "Content-Type" : "application/json",
+            },
+            body: JSON.stringify(formData)
+        })
+
+        const data = await response.json();
+
+        // if (!response.ok) {
+        //   setResponseMessage(data.error || "Request failed");
+        //   return;
+        // }
+
+        if(data.success) {
+          toast.success("Message sent successfully!");
+        
+
+          setFormData({
+            name: "",
+            email: "",
+            message: ""
+          })
+
+          return;
+        } 
+
+        toast.error(data.error || "Something went wrong");
+
+    } catch (err) {
+        toast.error(err.message || "Server error");
+    } finally {
+        setLoading(false);
+    }
   };
+
 
   return (
-    <section id="contact" className="py-24 bg-white dark:bg-gray-950">
+    <section id="contact" className="section-glow py-24 bg-white/5 dark:bg-white/5 backdrop-blur-md border border-white/10">
       <div className="mx-auto max-w-6xl px-6">
 
         {/* Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+        <div
+          // initial={false}
+          // animate={{ opacity: 1, x: 0 }}
+          // viewport={{ once: true, amount: 0.2}}
           className="text-center"
         >
           <h2 className="text-4xl font-bold text-black dark:text-white">
@@ -37,7 +93,7 @@ export default function Contact() {
           <p className="mt-4 text-gray-600 dark:text-gray-400">
             Have a project in mind? Let’s build something amazing.
           </p>
-        </motion.div>
+        </div>
 
         {/* Grid */}
         <div className="mt-12 grid gap-10 md:grid-cols-2">
@@ -58,24 +114,24 @@ export default function Contact() {
               <p><strong>Location:</strong> Karachi, Pakistan</p>
             </div>
 
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-gray-400">
               Typical response time: within 24 hours
             </div>
           </div>
 
           {/* RIGHT SIDE FORM */}
-          <motion.form
+          <form
             onSubmit={handleSubmit}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            // initial={{ opacity: 0, y: 20 }}
+            // whileInView={{ opacity: 1, y: 0 }}
+            // viewport={{ once: true }}
             className="space-y-4 p-4 sm:p-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm"
           >
             <input
               type="text"
               name="name"
               placeholder="Your Name"
-              value={form.name}
+              value={formData.name}
               onChange={handleChange}
               className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent p-3 sm:p-4 text-black dark:text-white outline-none focus:border-black dark:focus:border-white"
             />
@@ -84,7 +140,7 @@ export default function Contact() {
               type="email"
               name="email"
               placeholder="Your Email"
-              value={form.email}
+              value={formData.email}
               onChange={handleChange}
               className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent p-3 text-black dark:text-white outline-none focus:border-black dark:focus:border-white"
             />
@@ -93,7 +149,7 @@ export default function Contact() {
               name="message"
               placeholder="Your Message"
               rows="5"
-              value={form.message}
+              value={formData.message}
               onChange={handleChange}
               className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent p-3 text-black dark:text-white outline-none focus:border-black dark:focus:border-white"
             />
@@ -101,10 +157,13 @@ export default function Contact() {
             <button
               type="submit"
               className="w-full rounded-lg bg-black py-3 text-white transition hover:opacity-80 dark:bg-white dark:text-black"
+              disabled={loading}
             >
-              Send Message
+              {loading ? "Sending..." : "Send Message"}
             </button>
-          </motion.form>
+
+            <p>{responseMessage}</p>
+          </form>
 
         </div>
       </div>

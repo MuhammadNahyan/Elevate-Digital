@@ -6,6 +6,77 @@ html {
   scroll-behavior: smooth;
 }
 
+section {
+  scroll-margin-top: 100px;
+}
+
+.animate-blob {
+  animation-name: blob;
+  animation-duration: 12s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+
+  25% {
+    transform: translate(80px, -60px) scale(1.15);
+  }
+
+  50% {
+    transform: translate(-60px, 50px) scale(0.9);
+  }
+
+  75% {
+    transform: translate(50px, 30px) scale(1.05);
+  }
+
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+.section-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.section-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    600px circle at var(--x) var(--y),
+    rgba(255, 255, 255, 0.08),
+    transparent 40%
+  );
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.section-glow:hover::before {
+  opacity: 1;
+}
+
+
 /* :root {
   --background: #ffffff;
   --foreground: #171717;

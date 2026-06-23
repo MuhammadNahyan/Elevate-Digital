@@ -1,11 +1,22 @@
-export default function Contact() {
-    return(
-        <main className="p-10">
+"use client";
 
-            <h1 className="text-4xl font-bold">
-                Contacts Page
-            </h1>
-            
-        </main>
-    )
+import { useEffect } from "react";
+import Contact from "@/components/Contact";
+import Footer from "@/components/Footer";
+
+export default function ContactPage() {
+  
+  useEffect(() => {
+  console.log("Contact mounted");
+  return () => console.log("Contact unmounted");
+}, []);
+
+  return (
+    <div key="contact-page">
+    <main suppressHydrationWarning>
+      <Contact />
+      <Footer />
+    </main>
+    </div>
+  );
 }

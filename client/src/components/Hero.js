@@ -6,10 +6,11 @@ export default function Hero() {
   return (
     <motion.section
         id="home"
-        initial={{ opacity: 0, y: 40 }}
+        initial={false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
-        className="flex min-h-screen items-center justify-center px-6"
+        viewport={{ once: true , amount: 0.2 }}
+        className=" section-glow flex min-h-screen items-center justify-center px-6"
     >
 
       <div className="max-w-5xl text-center">
@@ -22,17 +23,23 @@ export default function Hero() {
           We Build Modern Web Experiences
         </h1>
 
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600">
+        <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-500">
           NovaDigital creates scalable MERN applications,
           high-performance frontend systems, and modern digital products.
         </p>
 
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row w-full sm:w-auto">
 
-            <a href="#projects"
+            <a href="/projects"
                className="rounded-xl bg-black dark:bg-white px-8 py-4 text-white dark:text-black border border-black dark:border-white transition hover:opacity-80"
             >
                 View Projects
+            </a>
+
+            <a href="/services"
+               className="rounded-xl bg-black dark:bg-white px-8 py-4 text-white dark:text-black border border-black dark:border-white transition hover:opacity-80"
+            >
+                Explore Services
             </a>
 
             <a href="/contact"

@@ -1,217 +1,434 @@
+// "use client";
+
+// import { usePathname } from "next/navigation";
+// import { useEffect, useState } from "react";
+// import Link from "next/link";
+
+// const homeLinks = [
+//   { name: "Home", id: "home", path: "#home" },
+//   { name: "About", id: "about", path: "#about" },
+//   { name: "Services", id: "services", path: "#services" },
+//   { name: "Projects", id: "projects", path: "#projects" },
+//   { name: "Contact", id: "contact", path: "#contact" },
+// ];
+
+// const pageLinks = [
+//   { name: "Home", path: "/", id: "home" },
+//   { name: "Projects", path: "/projects", id: "projects-page" },
+//   { name: "Services", path: "/services", id: "services-page" },
+//   { name: "Contact", path: "/contact", id: "contact-page" }
+// ];
+
+// export default function Navbar() {
+
+//   const pathname = usePathname();
+//   const isHome = pathname === "/";
+//   const navLinks = isHome ? homeLinks : pageLinks;
+
+//   const [menuOpen, setMenuOpen] = useState(false);
+//   const [darkMode, setDarkMode] = useState(false);
+//   const [active, setActive] = useState("home");
+//   const [scrolled, setScrolled] = useState(false);
+
+//   // ✅ Dark mode toggle (unchanged)
+//   const toggleDarkMode = () => {
+//     const isDark = document.documentElement.classList.contains("dark");
+
+//     if (isDark) {
+//       document.documentElement.classList.remove("dark");
+//       localStorage.setItem("darkMode", "false");
+//     } else {
+//       document.documentElement.classList.add("dark");
+//       localStorage.setItem("darkMode", "true");
+//     }
+//   };
+
+//   // ✅ Scroll spy (ONLY homepage)
+//   useEffect(() => {
+//     if (!isHome) return;
+//     if (typeof window === "undefined") return;
+
+//     let observer;
+
+//     const timeout = setTimeout(() => {
+//       const sections = document.querySelectorAll("section[id]");
+
+//       observer = new IntersectionObserver(
+//         (entries) => {
+//           entries.forEach((entry) => {
+//             if (entry.isIntersecting) {
+//               setActive(entry.target.id);
+//             }
+//           });
+//         },
+//         { threshold: 0.4 }
+//       );
+
+//       sections.forEach((s) => observer.observe(s));
+//     }, 0);
+
+//     return () => {
+//       clearTimeout(timeout);
+//       if (observer) {
+//         const sections = document.querySelectorAll("section[id]");
+//         sections.forEach((s) => observer.unobserve(s));
+//         observer.disconnect();
+//       }
+//     };
+//   }, [isHome, pathname]);
+
+//   // ✅ Scroll state
+//   useEffect(() => {
+//     const handleScroll = () => {
+//       setScrolled(window.scrollY > 10);
+//     };
+
+//     window.addEventListener("scroll", handleScroll);
+//     return () => window.removeEventListener("scroll", handleScroll);
+//   }, []);
+
+//   // ✅ Reset on route change
+//   useEffect(() => {
+//     setActive("home");
+
+//     // stop stale observer effects
+//     const sections = document.querySelectorAll("section[id]");
+//     sections.forEach(sec => sec.getBoundingClientRect()); // forces layout recalculation
+
+//     window.scrollTo(0, 0);
+//   }, [pathname]);
+
+//   return (
+//     <>
+//       {menuOpen && (
+//         <div
+//           className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50"
+//           onClick={() => setMenuOpen(false)}
+//         />
+//       )}
+
+//       <nav
+//         className={`
+//           sticky top-0 z-50
+//           flex items-center justify-between
+//           px-4 sm:px-6 md:px-8 py-4
+//           backdrop-blur-xl
+//           bg-white/60 dark:bg-black/40
+//           border-b border-white/10
+//           ${scrolled
+//             ? "bg-white/70 dark:bg-black/50 shadow-lg"
+//             : "bg-white/40 dark:bg-black/20"}
+//         `}
+//       >
+//         {/* Logo */}
+//         <h1 className="text-2xl font-bold">NovaDigital</h1>
+
+//         {/* Desktop Links */}
+//         <div className="hidden md:flex gap-6">
+//           {navLinks.map((link) => {
+//             const isHash = link.path.startsWith("#");
+
+//             if (isHash) {
+//               return (
+//                 <a
+//                   key={link.path}
+//                   href={link.path}
+//                   className={`transition ${
+//                     active === link.id
+//                       ? "text-black dark:text-white font-bold"
+//                       : "text-gray-500"
+//                   }`}
+//                 >
+//                   {link.name}
+//                 </a>
+//               );
+//             }
+
+//             return (
+//               <Link
+//                 key={link.path}
+//                 href={link.path}
+//                 className={`transition ${
+//                   pathname === link.path
+//                     ? "text-black dark:text-white font-bold"
+//                     : "text-gray-500"
+//                 }`}
+//               >
+//                 {link.name}
+//               </Link>
+//             );
+//           })}
+//         </div>
+
+//         {/* Controls */}
+//         <div className="flex items-center gap-3">
+
+//           <button
+//             onClick={toggleDarkMode}
+//             className="px-3 py-1 border rounded"
+//           >
+//             {darkMode ? "☀️" : "🌙"}
+//           </button>
+
+//           <button
+//             className="md:hidden text-2xl"
+//             onClick={() => setMenuOpen(!menuOpen)}
+//           >
+//             ☰
+//           </button>
+//         </div>
+
+//         {/* Mobile Menu */}
+//         <div
+//           className={`
+//             fixed top-0 right-0 h-full w-72 z-[1000]
+//             backdrop-blur-2xl
+//             border-l border-white/20 dark:border-gray-700
+//             shadow-2xl
+//             transform transition-transform duration-300
+//             ${menuOpen ? "translate-x-0" : "translate-x-full"}
+//           `}
+//         >
+//           <div
+//             onClick={(e) => e.stopPropagation()}
+//             className="flex flex-col p-6 gap-6 bg-white/90 dark:bg-black/90 h-full"
+//           >
+//             <button
+//               className="text-4xl"
+//               onClick={() => setMenuOpen(false)}
+//             >
+//               ←
+//             </button>
+
+//             {navLinks.map((link) => {
+//               const isHash = link.path.startsWith("#");
+
+//               if (isHash) {
+//                 return (
+//                   <a
+//                     key={link.path}
+//                     href={link.path}
+//                     className={`transition ${
+//                       active === link.id
+//                         ? "text-black dark:text-white font-bold"
+//                         : "text-gray-500"
+//                     }`}
+//                   >
+//                     {link.name}
+//                   </a>
+//                 );
+//               }
+
+//               return (
+//                 <Link
+//                   key={link.path}
+//                   href={link.path}
+//                   className={`transition ${
+//                     pathname === link.path
+//                       ? "text-black dark:text-white font-bold"
+//                       : "text-gray-500"
+//                   }`}
+//                 >
+//                   {link.name}
+//                 </Link>
+//               );
+//             })}
+//           </div>
+//         </div>
+//       </nav>
+//     </>
+//   );
+// }
+
+
+
+
+
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
-const navLinks = [
+const homeLinks = [
   { name: "Home", id: "home", path: "#home" },
-  { name: "About", id: "about", path: "#about"},
+  { name: "About", id: "about", path: "#about" },
   { name: "Services", id: "services", path: "#services" },
   { name: "Projects", id: "projects", path: "#projects" },
   { name: "Contact", id: "contact", path: "#contact" },
 ];
 
+const pageLinks = [
+  { name: "Home", path: "/", id: "home" },
+  { name: "Projects", path: "/projects", id: "projects" },
+  { name: "Services", path: "/services", id: "services" },
+  { name: "Contact", path: "/contact", id: "contact" }
+];
+
 export default function Navbar() {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
+  const navLinks = isHome ? homeLinks : pageLinks;
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [active, setActive] = useState("home");
+  const [scrolled, setScrolled] = useState(false);
 
-  // Load dark mode from localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem("darkMode");
-    if (saved === "true") {
-      setDarkMode(true);
-      document.documentElement.classList.add("dark");
-    }
-  }, []);
-
-  // Toggle dark mode
+  // 🌙 Dark mode
   const toggleDarkMode = () => {
-    setDarkMode((prev) => {
-      const newMode = !prev;
+    const isDark = document.documentElement.classList.contains("dark");
 
-      if (newMode) {
-        document.documentElement.classList.add("dark");
-        localStorage.setItem("darkMode", "true");
-      } else {
-        document.documentElement.classList.remove("dark");
-        localStorage.setItem("darkMode", "false");
-      }
-
-      return newMode;
-    });
+    if (isDark) {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("darkMode", "false");
+    } else {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("darkMode", "true");
+    }
   };
 
-  // Scroll spy
+  // 📜 Scroll state (safe everywhere)
   useEffect(() => {
-    const sections = document.querySelectorAll("section[id]");
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActive(entry.target.id);
-          }
-        });
-      },
-      {
-        threshold: 0.4,
-      }
-    );
-
-    sections.forEach((section) => {
-      observer.observe(section);
-    });
-
-    return () => {
-      sections.forEach((section) => {
-        observer.unobserve(section);
-      });
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
     };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // ⚠️ ONLY run scroll spy on homepage
+  useEffect(() => {
+    if (!isHome) return;
+
+    let observer;
+
+    const init = () => {
+      const sections = document.querySelectorAll("section[id]");
+      if (!sections.length) return;
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setActive(entry.target.id);
+            }
+          });
+        },
+        { threshold: 0.4 }
+      );
+
+      sections.forEach((s) => observer.observe(s));
+    };
+
+    // delay ensures DOM exists
+    const timeout = setTimeout(init, 100);
+
+    return () => {
+      clearTimeout(timeout);
+      if (observer) observer.disconnect();
+    };
+  }, [isHome]);
+
+  // reset active on route change
+  useEffect(() => {
+    setActive("home");
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   return (
-    <nav className="sticky top-0 z-50 flex items-center justify-between px-4 sm:px-6 md:px-8 py-4 border-b bg-white dark:bg-black dark:text-white">
-
-      {/* Logo */}
-      <h1 className="text-2xl font-bold">NovaDigital</h1>
-
-      {/* Desktop Links */}
-      <div className="hidden md:flex gap-6">
-        {navLinks.map((link) => {
-          const isActive = active === link.path.replace("#", "");
-
-          return (
-            <a
-              key={link.name}
-              href={link.path}
-              className={`transition ${
-                isActive
-                  ? "text-black dark:text-white font-bold"
-                  : "text-gray-500"
-              }`}
-            >
-              {link.name}
-            </a>
-          );
-        })}
-      </div>
-
-      {/* Right Controls */}
-      <div className="flex items-center gap-3">
-
-        {/* Dark Mode Button */}
-        <button
-          onClick={toggleDarkMode}
-          className="px-3 py-1 border rounded"
-        >
-          {darkMode ? "☀️" : "🌙"}
-        </button>
-
-        {/* Mobile Menu Button */}
-        <button
-          className="md:hidden text-2xl"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          ☰
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-
-        {menuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.25 }}
-            className="absolute top-16 left-0 w-full border-t 
-            bg-white dark:bg-black md:hidden"
-          >
-
-            <div className="flex flex-col items-center gap-6 py-6">
-
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.path}
-                  onClick={() => setMenuOpen(false)}
-                  className="text-lg text-gray-700 transition 
-                  hover:text-black dark:text-gray-300 dark:hover:text-white"
-                >
-                  {link.name}
-                </a>
-              ))}
-
-            </div>
-
-          </motion.div>
-        )}
-
-      </AnimatePresence>
-
-
+    <>
       {menuOpen && (
         <div
-          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50"
           onClick={() => setMenuOpen(false)}
         />
       )}
 
-      <div
-        className={`fixed top-0 right-0 h-full w-72 z-50
-          transform transition-transform duration-300
-          ${menuOpen ? "translate-x-0" : "translate-x-full"}
-          bg-white/20 dark:bg-black/40
+      <nav
+        className={`
+          sticky top-0 z-50
+          flex items-center justify-between
+          px-4 sm:px-6 md:px-8 py-4
           backdrop-blur-xl
-          border-l border-white/20 dark:border-gray-700
-          shadow-2xl`
-        }
+          border-b border-white/10
+          ${scrolled
+            ? "bg-white/70 dark:bg-black/50 shadow-lg"
+            : "bg-white/40 dark:bg-black/20"}
+        `}
       >
+        {/* Logo */}
+        <h1 className="text-2xl font-bold">NovaDigital</h1>
 
-        <div 
-          onClick={(e) => e.stopPropagation()}
-          className="flex flex-col p-6 gap-6"
-        >
+        {/* Desktop */}
+        <div className="hidden md:flex gap-6">
+          {navLinks.map((link) => {
+            const isHash = link.path.startsWith("#");
 
-          <button
-            className="flex items-center gap-2 text-4xl font-medium text-black dark:text-white hover:opacity-70 transition"
-            onClick={() => setMenuOpen(false)}
-          >
-            ←
+            if (isHash) {
+              return (
+                <a
+                  key={link.path}
+                  href={link.path}
+                  className={active === link.id ? "font-bold" : "text-gray-500"}
+                >
+                  {link.name}
+                </a>
+              );
+            }
+
+            return (
+              <Link
+                key={link.path}
+                href={link.path}
+                className={pathname === link.path ? "font-bold" : "text-gray-500"}
+              >
+                {link.name}
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Controls */}
+        <div className="flex items-center gap-3">
+          <button onClick={toggleDarkMode} className="px-3 py-1 border rounded">
+            {darkMode ? "☀️" : "🌙"}
           </button>
 
-          {navLinks.map((link) => (
-            <a
-              key={link.id}
-              href={link.path}
-              onClick={() => {
-                setMenuOpen(false);
-                setActive(link.id);
-              }}
-              className={`
-                relative text-lg font-medium transition
-                ${
-                  active === link.id
-                    ? "text-black dark:text-white font-bold"
-                    : "text-gray-500 dark:text-gray-400"
-                }
-              `}
-            >
-              {link.name}
-              <span
-                className={`
-                  absolute left-0 -bottom-1 h-[2px] 
-                  bg-black dark:bg-white transition-all duration-300
-                  ${active === link.id ? "w-full" : "w-0"}
-                `}
-              />
-            </a>
-          ))}
-
+          <button
+            className="md:hidden text-2xl"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            ☰
+          </button>
         </div>
-      </div>
-    </nav>
+
+        {/* Mobile */}
+        <div
+          className={`
+            fixed top-0 right-0 h-full w-72 z-[1000]
+            backdrop-blur-2xl
+            transition-transform duration-300
+            ${menuOpen ? "translate-x-0" : "translate-x-full"}
+          `}
+        >
+          <div className="p-6 flex flex-col gap-6">
+            <button onClick={() => setMenuOpen(false)}>←</button>
+
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                href={link.path}
+                onClick={() => setMenuOpen(false)}
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </nav>
+    </>
   );
 }

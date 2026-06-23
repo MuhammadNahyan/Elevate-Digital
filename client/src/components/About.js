@@ -4,21 +4,18 @@ import { motion } from "framer-motion";
 
 export default function About() {
   return (
-    <section
-      id="about"
-      className="bg-white dark:bg-black py-24"
-    >
+    <section id="about" className="py-24 section-glow bg-white/5 dark:bg-white/5 backdrop-blur-md border-y border-white/10">
       <div className="mx-auto grid max-w-6xl gap-16 px-6 md:grid-cols-2 md:items-center">
 
         {/* Left Side */}
-        <motion.div
-          initial={{ opacity: 0, x: -40 }}
-          whileInView={{ opacity: 1, x: 0 }}
+        <div
+          // initial={false}
+          // animate={{ opacity: 1, x : 0 }}
+          // viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
         >
 
-          <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-gray-500">
+          <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-gray-400">
             About Us
           </p>
 
@@ -38,14 +35,14 @@ export default function About() {
             that are both visually stunning and technically strong.
           </p>
 
-        </motion.div>
+        </div>
 
         {/* Right Side */}
-        <motion.div
-          initial={{ opacity: 0, x: 40 }}
-          whileInView={{ opacity: 1, x: 0 }}
+        <div
+          // initial={{ opacity: 0, x: 40 }}
+          // whileInView={{ opacity: 1, x: 0 }}
+          // viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
           className="grid grid-cols-2 gap-6"
         >
 
@@ -118,7 +115,7 @@ export default function About() {
             </p>
           </div>
 
-        </motion.div>
+        </div>
 
       </div>
     </section>

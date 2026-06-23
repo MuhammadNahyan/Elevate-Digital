@@ -25,7 +25,7 @@ const services = [
 
 export default function Services() {
   return (
-    <section className="py-24" id="services">
+    <section className="py-24 section-glow" id="services">
 
       <div className="mx-auto max-w-6xl px-6">
 
@@ -35,16 +35,17 @@ export default function Services() {
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
 
-          {services.map((service) => {
+          {(services ?? []).map((service) => {
             const Icon = service.icon;
 
             return (
               <motion.div
                 key={service.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={false}
+                animate={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.5 }}
-                viewport={{ once: true }}
+                // viewport={{ once: false, amount: 0.2 }}
                 className="rounded-2xl border p-6 sm:p-8 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-2xl"
               >
 
@@ -56,7 +57,7 @@ export default function Services() {
                   {service.title}
                 </h3>
 
-                <p className="mt-4 text-gray-600">
+                <p className="mt-4 text-gray-500">
                   {service.description}
                 </p>
 
