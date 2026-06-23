@@ -8,7 +8,10 @@ import Footer from "@/components/Footer";
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  const res = await fetch(`http://localhost:3000/api/content`, {
+
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+  const res = await fetch(`${baseUrl}/api/content`, {
     cache: "no-store",
   });
 
