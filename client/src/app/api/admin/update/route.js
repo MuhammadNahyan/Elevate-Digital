@@ -1,4 +1,4 @@
-import { connectDB } from "@/lib/db";
+import { connectDB } from "@/lib/mongodb.js";
 import Content from "@/models/Content";
 
 export async function POST(req) {
