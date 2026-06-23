@@ -9,9 +9,7 @@ export const dynamic = "force-dynamic";
 
 export default async function Page() {
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
-  const res = await fetch(`${baseUrl}/api/content`, {
+  const res = await fetch(`https://elevate-digital-lemon.vercel.app/api/content`, {
     cache: "no-store",
   });
 
